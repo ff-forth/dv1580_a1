@@ -24,6 +24,7 @@ void capture_stdout(char *buffer, size_t size, void (*func)(Node **, Node *, Nod
 
     // Redirect stdout to the temporary file
     stdout = fp;
+    printf("HELLO IGEN \n");
 
     // Call the function whose output we want to capture
     func(head, start_node, end_node);
@@ -35,12 +36,7 @@ void capture_stdout(char *buffer, size_t size, void (*func)(Node **, Node *, Nod
     rewind(fp);
 
     // Read the content of the temporary file into the buffer
-    int got=fread(buffer, 1, size - 1, fp); // Leave space for null terminator
-    if (got == 0) {
-      if (ferror(fp)!=0) {
-	printf("Problem with STDOUT.\n");
-      }
-    }
+    fread(buffer, 1, size - 1, fp); // Leave space for null terminator
     buffer[size - 1] = '\0';        // Ensure the buffer is null-terminated
 
     // Close the temporary file
@@ -84,7 +80,6 @@ void test_list_insert_after()
     Node *node = head;
     list_insert_after(node, 20);
     my_assert(node->next->data == 20);
-
     list_cleanup(&head);
     printf_green("[PASS].\n");
 }
@@ -96,6 +91,7 @@ void test_list_insert_before()
     list_init(&head, sizeof(Node) * 3);
     list_insert(&head, 10);
     list_insert(&head, 30);
+    
     Node *node = head->next; // Node with data 30
     list_insert_before(&head, node, 20);
     my_assert(head->next->data == 20);
@@ -146,7 +142,6 @@ void test_list_display()
 #ifdef DEBUG
     printf_yellow("   Testing %d nodes.\n", Nnodes);
 #endif
-
     list_init(&head, sizeof(Node) * Nnodes);
 
     int randomLow = rand() % Nnodes;
@@ -296,6 +291,7 @@ void test_list_display()
     char buffer[1024] = {0}; // Buffer to capture the output
 
     // Test case 1: Displaying full list
+    printf("HELLO\n");
     capture_stdout(buffer, sizeof(buffer), (void (*)(Node **, Node *, Node *))list_display_range, &head, NULL, NULL);
     my_assert(strcmp(buffer, stringFull) == 0);
     printf("\tFull list: %s\n", buffer);
@@ -319,12 +315,6 @@ void test_list_display()
     printf("\tK random node(s): %s\n", buffer);
 
     list_cleanup(&head);
-
-    free(blob);
-    free(stringFull);
-    free(string2Last);
-    free(string1third);
-    free(stringRandom);
     printf_green("  ... [PASS].\n");
 }
 
@@ -514,7 +504,6 @@ int main(int argc, char *argv[])
         printf(" 13. test_list_search_loop - Test multiple search\n");
         printf(" 14. test_list_edge_cases - Test edge cases\n");
         printf(" 0. Run all tests\n");
-	printf(" 100. Run all tests; -test_list_display() \n");
         return 1;
     }
 
@@ -522,24 +511,6 @@ int main(int argc, char *argv[])
     {
     case -1:
         printf("No tests will be executed.\n");
-        break;
-    case 100:
-        printf("Testing Basic Operations:\n");
-        test_list_init();
-        test_list_insert();
-        test_list_insert_after();
-        test_list_insert_before();
-        test_list_delete();
-        test_list_search();
-        test_list_count_nodes();
-        test_list_cleanup();
-
-        printf("\nTesting Stress and Edge Cases:\n");
-        test_list_insert_loop(1000);
-        test_list_insert_after_loop(1000);
-        test_list_delete_loop(1000);
-        test_list_search_loop(1000);
-        test_list_edge_cases();
         break;
     case 0:
         printf("Testing Basic Operations:\n");

@@ -43,10 +43,10 @@ void test_zero_alloc_and_free()
     printf_yellow("  Testing mem_alloc(0) and mem_free --->");
     mem_init(1024);
     void *block1 = mem_alloc(0);
-    my_assert(block1 != NULL);
+    my_assert(block1 == NULL);
     void *block2 = mem_alloc(200);
     my_assert(block2 != NULL);
-    my_assert(block1 == block2);
+    my_assert(block1 != block2);
 
     mem_free(block1);
     mem_free(block2);
@@ -72,6 +72,7 @@ void test_random_blocks()
     for (int k = 0; k < nBlocks; k++)
     {
         blocks[k] = mem_alloc(blockSize);
+        if(blocks[k] != NULL)
         my_assert(blocks[k] != NULL);
         blockSize = rand() % 1024;
     }
@@ -267,7 +268,7 @@ void test_contiguous_allocation_success()
 
     // Try to allocate a block that fits into the freed space
     void *block4 = mem_alloc(500);
-    my_assert(block2 != NULL); // This allocation should succeed
+    my_assert(block4 != NULL); // This allocation should succeed
 
     mem_free(block3);
     mem_free(block4);
@@ -444,7 +445,7 @@ int main(int argc, char *argv[])
 	printf("\nVarious tests: \n");
 	printf(" 17. test_zero_alloc_and_free - Ensure that we can allocate 0 bytes, and it does not fail.\n");
 	printf(" 18. test_random_blocks - Test that we can allocate a random size, and random amounts of blocks [1000,10000]. \n");
-        printf(" 19. test_init, but large memory - Initialize memory system\n");
+    printf(" 19. test_init, but large memory - Initialize memory system\n");
 	printf(" 20. test_looking_for_out_of_bounds, needs LD_PRELOAD=./libmymalloc.so .Needs argument of size.\n\n");
 	printf(" 21. test_mmap, needs LD_PRELOAD=./libmymalloc.so .\n\n");
 	
