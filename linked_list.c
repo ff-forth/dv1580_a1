@@ -18,7 +18,6 @@ void list_insert(Node** head, uint16_t data)
 
     Node* cur_node = *head;
     for (int i = -1; i<list_count_nodes(head); i++){
-        // printf("insert %d\n", data);
         if (cur_node == NULL)
         {
             *head = new_node;
@@ -27,7 +26,6 @@ void list_insert(Node** head, uint16_t data)
         else if (cur_node->next == NULL)
         {
             cur_node->next = new_node;
-            // printf("inserted\n");
             break;
         }
         else
@@ -35,7 +33,6 @@ void list_insert(Node** head, uint16_t data)
             cur_node = cur_node->next;
         }
     }
-    // printf("insert %d at %p\n", data, cur_node);
 };
 
 void list_insert_after(Node* prev_node, uint16_t data)
@@ -53,10 +50,8 @@ void list_insert_before(Node** head, Node* next_node, uint16_t data){
 
     Node* cur_node = *head;
     int num = list_count_nodes(head);
-    // printf("Insert before--->\n");
     for (int i = 0; i<num; i++)
     {
-        // printf("current: %p\n", cur_node);
         if (cur_node == next_node)
         {
             *head = new_node;
@@ -72,7 +67,6 @@ void list_insert_before(Node** head, Node* next_node, uint16_t data){
             cur_node = cur_node->next;
         }
     }
-    // printf("current: %p\n", cur_node);
 };
 
 void list_delete(Node** head, uint16_t data){
@@ -167,18 +161,18 @@ int list_count_nodes(Node** head){
     Node* cur_node = *head;
     while(cur_node != NULL)
     {
-        // printf("%d:%p\n" ,cur_node->data,cur_node);
         num++;
         cur_node = cur_node->next;
     }
-    //printf(" num = %d\n", num);
     return num;
 };
 
 void list_cleanup(Node** head)
 {
-    while(*head != NULL){
+    while (list_count_nodes(head) > 0)
+    {
         list_delete(head, (*head)->data);
     }
-    // mem_deinit();
+
+    mem_deinit();
 };
