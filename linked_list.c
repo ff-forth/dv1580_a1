@@ -49,8 +49,7 @@ void list_insert_before(Node** head, Node* next_node, uint16_t data){
     new_node->next = next_node;
 
     Node* cur_node = *head;
-    int num = list_count_nodes(head);
-    for (int i = 0; i<num; i++)
+    for (int i = -1; i<list_count_nodes(head); i++)
     {
         if (cur_node == next_node)
         {
@@ -71,7 +70,7 @@ void list_insert_before(Node** head, Node* next_node, uint16_t data){
 
 void list_delete(Node** head, uint16_t data){
     Node* cur_node = *head;
-    for (int i = -1; i < list_count_nodes(head); i++)
+    for (int i = 0; i < list_count_nodes(head); i++)
     {
         if ((*head)->data == data)
         {
@@ -93,7 +92,7 @@ void list_delete(Node** head, uint16_t data){
 
 Node* list_search(Node** head, uint16_t data){
     Node* cur_node = *head;
-    for (int i = -1; i < list_count_nodes(head); i++)
+    for (int i = 0; i < list_count_nodes(head); i++)
     {
         if (cur_node->data == data)
         {
@@ -163,6 +162,7 @@ int list_count_nodes(Node** head){
     {
         num++;
         cur_node = cur_node->next;
+
     }
     return num;
 };
@@ -174,5 +174,5 @@ void list_cleanup(Node** head)
         list_delete(head, (*head)->data);
     }
 
-    mem_deinit();
+    // mem_deinit();
 };

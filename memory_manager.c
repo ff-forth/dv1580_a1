@@ -170,4 +170,3 @@ void mem_deinit(){
     MemPool.first_block = NULL;
     MemPool.no_block = 0;
 }
-
