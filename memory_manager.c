@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//gcc -o main memory_manager.c && ./main
-
 struct MemBlock
 {
     void *header_ptr;
@@ -38,9 +36,6 @@ void block_init(struct MemBlock* block, void* ptr, size_t size){
     block->size = size;
     block->end_ptr = ptr + size;
     block->next_mem = NULL;
-    // printf("Create a block size %zu at %p - %p\n", 
-    // block->size,block->header_ptr,block->end_ptr);
-    // block_info(block);
 }
 
 // Initialize memory pool
@@ -66,21 +61,12 @@ void* mem_alloc(size_t size){
 
     for (int i = 0; i < MemPool.no_block; i++)
     {   
-        // printf("block no: %d\n", i+1);
-        // printf("check if memory pool is empty : %p\n", head);
-        // check if memory pool is empty
         if(cur_mem == NULL ){
             block_init(new_mem, head, size);
             MemPool.first_block = new_mem;
             return new_mem->header_ptr;
         }
-        // else
-        // {
-        //     block_info(cur_mem);
-        // }
         
-        // printf("check space in front of the block : %p\n", head);
-        // check space in front of the block
         if(head + size <= cur_mem->header_ptr)
         {
             block_init(new_mem, head, size);
@@ -93,8 +79,6 @@ void* mem_alloc(size_t size){
             head = cur_mem->end_ptr;
         }
         
-        // printf("check space behind the block : %p\n", head);
-        // check space behind the block
         if(cur_mem->next_mem == NULL && head + size <= MemPool.end_ptr)
         {
             block_init(new_mem, head, size);
@@ -124,7 +108,6 @@ void mem_free(void* block){
         else if (MemPool.first_block->header_ptr == block)
         {
             MemPool.first_block = cur_mem->next_mem;
-            // block_info(MemPool.first_block);
             MemPool.no_block--;
             free(cur_mem);
             break;
@@ -133,7 +116,6 @@ void mem_free(void* block){
         {
             struct MemBlock *temp = cur_mem->next_mem;
             cur_mem->next_mem = cur_mem->next_mem->next_mem;
-            // block_info(cur_mem);
             MemPool.no_block--;
             free(temp);
             break;
@@ -181,5 +163,11 @@ void mem_deinit(){
         mem_free(MemPool.first_block->header_ptr);
     }
     free(MemPool.header_ptr);
+    
+    MemPool.header_ptr = NULL;
+    MemPool.size = NULL;
+    MemPool.end_ptr = NULL;
+    MemPool.first_block = NULL;
+    MemPool.no_block = 0;
 }
 
