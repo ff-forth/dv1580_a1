@@ -24,7 +24,6 @@ void capture_stdout(char *buffer, size_t size, void (*func)(Node **, Node *, Nod
 
     // Redirect stdout to the temporary file
     stdout = fp;
-    printf("HELLO IGEN \n");
 
     // Call the function whose output we want to capture
     func(head, start_node, end_node);
@@ -291,7 +290,6 @@ void test_list_display()
     char buffer[1024] = {0}; // Buffer to capture the output
 
     // Test case 1: Displaying full list
-    printf("HELLO\n");
     capture_stdout(buffer, sizeof(buffer), (void (*)(Node **, Node *, Node *))list_display_range, &head, NULL, NULL);
     my_assert(strcmp(buffer, stringFull) == 0);
     printf("\tFull list: %s\n", buffer);
