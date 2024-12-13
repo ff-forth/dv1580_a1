@@ -114,19 +114,18 @@ Node* list_search(Node** head, uint16_t data){
 };
 
 void list_display(Node** head){
-    printf("\n[ ");
+    printf("[");
     
     Node* cur_node = *head;
-    for (int i = -1; i < list_count_nodes(head); i++)
+    for (int i = 0; i < list_count_nodes(head)-1; i++)
     {
         printf("%d, ", cur_node->data);
         cur_node = cur_node->next;
     }
-    printf("]\n");
+    printf("%d]", cur_node->data);
 };
 
 void list_display_range(Node** head, Node* start_node, Node* end_node){
-    printf("HELLO from display\n");
     if (start_node == NULL && end_node == NULL) 
     {
         list_display(head);
@@ -137,26 +136,29 @@ void list_display_range(Node** head, Node* start_node, Node* end_node){
         {
             start_node = *head;
         }
-        // if (end_node == NULL)
-        // {
-        //     start_node = NULL;
-        // }
 
-        printf("\n[ ");
+        printf("[");
         Node* cur_node = start_node;
-        for (int i = -1; i < list_count_nodes(head); i++)
+        for (int i = 1; i < list_count_nodes(head); i++)
         {
-            printf("%d, ", cur_node->data);
-            if(cur_node == end_node)
+            if(cur_node->next == end_node)
             {
+                if (cur_node->next == NULL)
+                {
+                    printf("%d]", cur_node->data);
+                }
+                else
+                {
+                    printf("%d, %d]", cur_node->data, cur_node->next->data);
+                }
                 break;
             }
             else
             {
+                printf("%d, ", cur_node->data);
                 cur_node = cur_node->next;
             }
         }
-        printf("]\n");
     }
 };
 
@@ -175,19 +177,8 @@ int list_count_nodes(Node** head){
 
 void list_cleanup(Node** head)
 {
-    mem_deinit();
+    while(*head != NULL){
+        list_delete(head, (*head)->data);
+    }
+    // mem_deinit();
 };
-
-
-// int main()
-// {
-//     printf("  Testing list_insert ---> ");
-//     Node *head = NULL;
-//     list_init(&head, sizeof(Node) * 2);
-//     list_insert(&head, 10);
-//     list_insert(&head, 20);
-//     if(head->data == 10 && head->next->data == 20)
-//     printf("[PASS].\n");
-//     list_cleanup(&head);
-//     return 0;
-// }
