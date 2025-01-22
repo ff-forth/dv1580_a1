@@ -22,6 +22,15 @@ struct MemPool
 } MemPool;
 
 static
+void block_info(struct MemBlock *block){
+    printf("\nMemBlock: %p\n", block);
+    printf("Header: %p\n", block->header_ptr);
+    printf("End: %p\n", block->end_ptr);
+    printf("size: %zu\n", block->size);
+    printf("Next: %p\n", block->next_mem);
+}
+
+static
 void block_init(struct MemBlock* block, void* ptr, size_t size){
     block->header_ptr = ptr;
     block->size = size;
@@ -134,7 +143,7 @@ void* mem_resize(void* block, size_t size){
                 return mem->header_ptr;
             }
             else{
-                void *temp = NULL;
+                void *temp;
                 memcpy(temp, mem->header_ptr, mem->size);
                 mem_free(mem->header_ptr);
                 void *new_mem = mem_alloc(size);
@@ -156,9 +165,8 @@ void mem_deinit(){
     free(MemPool.header_ptr);
     
     MemPool.header_ptr = NULL;
-    MemPool.size = 0;
+    MemPool.size = NULL;
     MemPool.end_ptr = NULL;
     MemPool.first_block = NULL;
     MemPool.no_block = 0;
 }
-

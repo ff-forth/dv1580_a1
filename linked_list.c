@@ -132,9 +132,9 @@ void list_display_range(Node** head, Node* start_node, Node* end_node){
 
         printf("[");
         Node* cur_node = start_node;
-        for (int i = 1; i < list_count_nodes(head); i++)
+        for (int i = -1; i < list_count_nodes(head); i++)
         {
-            if(cur_node->next == end_node)
+            if(cur_node->next == end_node || cur_node == end_node)
             {
                 if (cur_node->next == NULL)
                 {
@@ -174,5 +174,5 @@ void list_cleanup(Node** head)
         list_delete(head, (*head)->data);
     }
 
-    // mem_deinit();
+    mem_deinit();
 };

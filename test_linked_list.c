@@ -23,11 +23,7 @@ void capture_stdout(char *buffer, size_t size, void (*func)(Node **, Node *, Nod
     }
 
     // Redirect stdout to the temporary file
-    // Redirect stdout to the file
-    if (freopen(NULL, "wb+", stdout) == NULL) {
-        perror("Failed to redirect stdout");
-        fclose(fp); // Close the temporary file
-    }
+    stdout = fp;
 
     // Call the function whose output we want to capture
     func(head, start_node, end_node);
@@ -295,8 +291,6 @@ void test_list_display()
 
     // Test case 1: Displaying full list
     capture_stdout(buffer, sizeof(buffer), (void (*)(Node **, Node *, Node *))list_display_range, &head, NULL, NULL);
-    printf("buffer: %s.\n", buffer);
-    printf("stringFull: %s.\n", stringFull);
     my_assert(strcmp(buffer, stringFull) == 0);
     printf("\tFull list: %s\n", buffer);
 
