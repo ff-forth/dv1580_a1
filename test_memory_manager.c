@@ -122,6 +122,7 @@ void test_exceed_cumulative_allocation()
     my_assert(block2 != NULL);
     void *block3 = mem_alloc(100); // This should fail, no space left
     my_assert(block3 == NULL);
+
     mem_free(block1);
     mem_free(block2);
     mem_deinit();
