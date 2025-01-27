@@ -13,10 +13,10 @@ struct MemBlock
     struct MemBlock *next;
 }MemPool;
 
-static void block_info(struct MemBlock *block);
 void pool_info();
-static struct MemBlock* block_init(void* ptr, size_t size, void* next);
-static struct MemBlock* block_find(void* block);
+void block_info(struct MemBlock *block);
+struct MemBlock* block_init(void* ptr, size_t size, void* next);
+struct MemBlock* block_find(void* block);
 
 void mem_init(size_t size);
 void* mem_alloc(size_t size);

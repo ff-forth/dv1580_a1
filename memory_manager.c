@@ -4,7 +4,7 @@
 #include <string.h>
 #include "memory_manager.h"
 
-static
+// block_info prints information of the block
 void block_info(struct MemBlock *mblock)
 {
     printf("\nMemBlock: %p\n", mblock);
@@ -13,6 +13,7 @@ void block_info(struct MemBlock *mblock)
     printf("Next: %p\n", mblock->next);
 }
 
+// pool_info prints informations of all block in the pool
 void pool_info()
 {
     struct MemBlock* mblock = &MemPool;
@@ -25,7 +26,8 @@ void pool_info()
     
 }
 
-static
+// block_init creates a MemBlock in in the memory pool
+// and returns ptr of the created block
 struct MemBlock* block_init(void* ptr, size_t size, void* next)
 {
     void* blockptr = malloc(sizeof(struct MemBlock));
@@ -38,7 +40,7 @@ struct MemBlock* block_init(void* ptr, size_t size, void* next)
     return block;
 }
 
-static
+// block_find finds the block and returns ptr of the searched block
 struct MemBlock* block_find(void* block)
 {
     // Defind the block
@@ -60,7 +62,7 @@ struct MemBlock* block_find(void* block)
     return mblock;
 };
 
-// Initialize memory pool
+// mem_init initializes memory pool
 void mem_init(size_t size)
 {
     // Allocate space in the memory
@@ -73,7 +75,7 @@ void mem_init(size_t size)
 
 }
 
-// Allocate space in the memory pool
+// mem_alloc allocates space in the memory pool
 void* mem_alloc(size_t size)
 {
     // Check if size of MemBlock is greater than 0
@@ -167,7 +169,7 @@ void mem_free(void* block)
 
 }
 
-// -.- -.- -.- -.- -.- -.-
+// mem_resize resizes the block size and returns the new ptr
 void* mem_resize(void* block, size_t size)
 {
     // Find the previous block to the block
@@ -200,7 +202,7 @@ void* mem_resize(void* block, size_t size)
     return block;
 }
 
-// -.- -.- -.- -.- -.- -.-
+// mem_deinit frees all memory of the pool
 void mem_deinit()
 {
     // Free all mblock
