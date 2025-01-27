@@ -76,6 +76,13 @@ void mem_init(size_t size)
 // Allocate space in the memory pool
 void* mem_alloc(size_t size)
 {
+    // Check if size of MemBlock is greater than 0
+    if (size <= 0)
+    {
+        fprintf(stderr, "mem_alloc error: Too small, block size is %zu\n", size);
+        return NULL;
+    }
+
     // Check if enough space in the Memory pool
     if (size > MemPool.size)
     {
@@ -112,16 +119,16 @@ void* mem_alloc(size_t size)
         }
 
         // Move to the next block
-        block = block->next->ptr;
+        block = block->next;
     };
 
     // Check if it's enough space at the end
     if ((block->ptr + block->size + size) <= (MemPool.ptr + MemPool.size) && (block->ptr + block->size) != 0)
     {
-        block->next = block_init(block->ptr+size, size, NULL);
-        return block->next->ptr; // --> return invalid ptr
+        block->next = block_init(block->ptr + block->size, size, NULL);
+        return block->next->ptr;
     }
-    
+
     fprintf(stderr, "mem_alloc failed, can not allocate a space size %zu.\n", size);
     return NULL;
 }
@@ -129,6 +136,13 @@ void* mem_alloc(size_t size)
 // Free the allocated space in the memory pool
 void mem_free(void* block)
 {
+    // Check if block ptr is null
+    if (block == NULL)
+    {
+        fprintf(stderr, "mem_free error: block ptr is null.\n");
+        return;
+    }
+
     // Check if memory pool is empty
     if (MemPool.next == NULL)
     {
