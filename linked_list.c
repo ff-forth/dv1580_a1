@@ -23,7 +23,13 @@ void list_insert(Node** head, uint16_t data)
 {
     // Create a new node
     Node* new_node = mem_alloc(sizeof(Node));
+    if (new_node == NULL) {
+        fprintf(stderr, "Memory allocation failed in list_insert\n");
+        return;
+    }
+    // Initialize all fields
     new_node->data = data;
+    new_node->next = NULL;
     
     // Check if list is empty
     if (*head == NULL)
@@ -47,10 +53,18 @@ void list_insert(Node** head, uint16_t data)
 
 void list_insert_after(Node* prev_node, uint16_t data)
 {
+    if (prev_node == NULL) {
+        fprintf(stderr, "Previous node cannot be NULL\n");
+        return;
+    }
+
     // Create a new node
     Node* new_node = mem_alloc(sizeof(Node));
-
-    // Set the node's info
+    if (new_node == NULL) {
+        fprintf(stderr, "Memory allocation failed in list_insert_after\n");
+        return;
+    }
+    // Initialize all fields
     new_node->data = data;
     new_node->next = prev_node->next;
     prev_node->next = new_node;
@@ -58,10 +72,18 @@ void list_insert_after(Node* prev_node, uint16_t data)
 
 void list_insert_before(Node** head, Node* next_node, uint16_t data)
 {
+    if (next_node == NULL) {
+        fprintf(stderr, "Next node cannot be NULL\n");
+        return;
+    }
+
     // Create a new node
     Node* new_node = mem_alloc(sizeof(Node));
-
-    // Set the node's info
+    if (new_node == NULL) {
+        fprintf(stderr, "Memory allocation failed in list_insert_before\n");
+        return;
+    }
+    // Initialize all fields
     new_node->data = data;
     new_node->next = next_node;
 
