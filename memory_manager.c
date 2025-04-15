@@ -30,7 +30,7 @@ void pool_info()
 // and returns ptr of the created block
 struct MemBlock* block_init(void* ptr, size_t size, void* next)
 {
-    void* blockptr = mem_alloc(sizeof(struct MemBlock));
+    void* blockptr = malloc(sizeof(struct MemBlock));
     struct MemBlock* block = (struct MemBlock*)blockptr;
     
     block->ptr = ptr;
