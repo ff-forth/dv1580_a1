@@ -60,7 +60,7 @@ void list_insert_after(Node* prev_node, uint16_t data)
         fprintf(stderr, "Memory allocation failed in list_insert_after\n");
         return;
     }
-    // Initialize all fields
+    // Initialize the new node
     new_node->data = data;
     new_node->next = prev_node->next;
     prev_node->next = new_node;
@@ -79,7 +79,7 @@ void list_insert_before(Node** head, Node* next_node, uint16_t data)
         fprintf(stderr, "Memory allocation failed in list_insert_before\n");
         return;
     }
-    // Initialize all fields
+    // Initialize the new node
     new_node->data = data;
     new_node->next = next_node;
 
@@ -169,38 +169,52 @@ void list_display(Node** head)
 void list_display_range(Node** head, Node* start_node, Node* end_node)
 {
     if (start_node == NULL) start_node = *head;
+    
+    if (!start_node) return;
 
     Node* cur_node = start_node;
 
     printf("[");
     while (cur_node->next != NULL)
     {
+        printf("%d", cur_node->data);
+        
         if (cur_node == end_node) break;
         
-        printf("%d, ", cur_node->data);
         cur_node = cur_node->next;
+        if (cur_node) printf(", ");
     }
 
-    printf("%d]", cur_node->data);
+    printf("]\n");
 };
 
 int list_count_nodes(Node** head)
 {
-    int num = 0;
+    if (*head == NULL) 
+    {
+        fprintf(stderr, "list_count_nodes failed, list is empty.\n");
+        return 0;
+    }
+    
+    int count = 0;
     Node* cur_node = *head;
     while(cur_node != NULL)
     {
-        num++;
+        count++;
         cur_node = cur_node->next;
     }
-    return num;
+    return count;
 };
 
 void list_cleanup(Node** head)
 {
-    while (*head != NULL)
+    Node* cur_node = *head;
+    while (cur_node != NULL)
     {
-        list_delete(head, (*head)->data);
+        Node* next_node = cur_node->next;
+        mem_free(cur_node);
+        cur_node = next_node;
     }
+    *head = NULL;
     mem_deinit();
 };
