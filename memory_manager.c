@@ -88,11 +88,11 @@ void mem_init(size_t size)
 void* mem_alloc(size_t size)
 {
     // Check if size of MemBlock is greater than 0
-    if (size <= 0)
-    {
-        fprintf(stderr, "mem_alloc error: Too small, block size is %zu\n", size);
-        return NULL;
-    }
+    // if (size <= 0)
+    // {
+    //     fprintf(stderr, "mem_alloc error: Too small, block size is %zu\n", size);
+    //     return NULL;
+    // }
 
     // Check if enough space in the Memory pool
     if (size > MemPool.size) 
