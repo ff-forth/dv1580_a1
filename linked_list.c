@@ -1,10 +1,4 @@
 #include "linked_list.h"
-#include <stdio.h>  
-#include <stdlib.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "memory_manager.h"
-#include <string.h>
 
 void list_init(Node** head, size_t size)
 {
