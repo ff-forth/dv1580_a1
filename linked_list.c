@@ -11,6 +11,7 @@ void list_init(Node** head, size_t size)
     
     // initialze list
     mem_init(size);
+    *head = NULL;
 };
 
 void list_insert(Node** head, uint16_t data)
