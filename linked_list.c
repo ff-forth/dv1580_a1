@@ -170,12 +170,16 @@ void list_display_range(Node** head, Node* start_node, Node* end_node)
 {
     if (start_node == NULL) start_node = *head;
     
-    if (!start_node) return;
+    if (!start_node) 
+    {
+        fprintf(stderr, "list_display_range failed, list is empty.\n");
+        return;
+    }
 
     Node* cur_node = start_node;
 
     printf("[");
-    while (cur_node->next != NULL)
+    while (cur_node != NULL)
     {
         printf("%d", cur_node->data);
         
