@@ -189,7 +189,7 @@ void list_display_range(Node** head, Node* start_node, Node* end_node)
         if (cur_node) printf(", ");
     }
 
-    printf("]\n");
+    printf("]");
 };
 
 int list_count_nodes(Node** head)
