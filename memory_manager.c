@@ -197,35 +197,52 @@ void mem_free(void* block)
 // mem_resize resizes the block size and returns the new ptr
 void* mem_resize(void* block, size_t size)
 {
-    // Find the previous block to the block
-    struct MemBlock* mblock = block_find(block);
-    
-    // Store all block's info
-    mblock = mblock->next;
-    void *mstart = mblock->ptr; 
-    size_t msize = mblock->size;
-
-    // Check if new size is smaller
-    if (size <= msize)
+    if (!block || size == 0) 
     {
-        mblock->size = size;
+        fprintf(stderr, "mem_resize failed, block ptr is null or size is 0.\n");
+        return NULL;
+    }
+
+    // Find the block
+    struct MemBlock* prevBlock = block_find(block);
+    if (!prevBlock || !prevBlock->next) 
+    {
+        fprintf(stderr, "mem_resize failed, cannot find the block to resize\n");
+        return NULL;
+    }
+
+    struct MemBlock* current = prevBlock->next;
+    size_t old_size = current->size;
+
+    // If new size is smaller, just update the size
+    if (size <= old_size) {
+        current->size = size;
         return block;
     }
+
+    // Try to expand in place if possible
+    if (current->next && 
+        (current->ptr + size) <= current->next->ptr) {
+        current->size = size;
+        fprintf(stderr, "mem_resize failed, can not allocate a new block.\n");
+        return block;
+    }
+
+    // Need to allocate new block and copy data
+    void* new_block = mem_alloc(size);
+    if (!new_block) 
+    {
+        fprintf(stderr, "mem_resize failed, can not allocate a new block.\n");
+        return block;
+    }
+
+    // Copy the data
+    memcpy(new_block, block, old_size);
     
     // Free the old block
     mem_free(block);
-    
-    // Move the data to the newBlock allocation
-    block = memcpy(mem_alloc(size), mstart, msize);
 
-    // Check if resize have done successfuly
-    if (block == NULL)
-    {
-        fprintf(stderr,"mem_resize failed, can not find enough space.");
-        block = memcpy(mem_alloc(msize), mstart, msize);
-    }
-    
-    return block;
+    return new_block;
 }
 
 // mem_deinit frees all memory of the pool
