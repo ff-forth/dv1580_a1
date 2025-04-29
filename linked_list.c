@@ -22,7 +22,8 @@ void list_insert(Node** head, uint16_t data)
         fprintf(stderr, "Memory allocation failed in list_insert\n");
         return;
     }
-    // Initialize all fields
+    
+    // Initialize the new node
     new_node->data = data;
     new_node->next = NULL;
     
